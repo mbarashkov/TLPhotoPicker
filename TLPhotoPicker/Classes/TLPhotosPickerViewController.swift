@@ -14,7 +14,7 @@ import MobileCoreServices
 public protocol TLPhotosPickerViewControllerDelegate: AnyObject {
     func dismissPhotoPicker(withPHAssets: [PHAsset])
     func dismissPhotoPicker(withTLPHAssets: [TLPHAsset])
-    func shouldDismissPhotoPicker(withTLPHAssets: [TLPHAsset]) -> Bool
+	func shouldDismissPhotoPicker(_ picker: TLPhotosPickerViewController, withTLPHAssets: [TLPHAsset]) -> Bool
     func dismissComplete()
     func photoPickerDidCancel()
     func canSelectAsset(phAsset: PHAsset) -> Bool
@@ -27,7 +27,7 @@ extension TLPhotosPickerViewControllerDelegate {
     public func deninedAuthoization() { }
     public func dismissPhotoPicker(withPHAssets: [PHAsset]) { }
     public func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) { }
-    public func shouldDismissPhotoPicker(withTLPHAssets: [TLPHAsset]) -> Bool { return true }
+    public func shouldDismissPhotoPicker(_ picker: TLPhotosPickerViewController, withTLPHAssets: [TLPHAsset]) -> Bool { return true }
     public func dismissComplete() { }
     public func photoPickerDidCancel() { }
     public func canSelectAsset(phAsset: PHAsset) -> Bool { return true }
@@ -557,7 +557,7 @@ extension TLPhotosPickerViewController {
             self.delegate?.dismissPhotoPicker(withPHAssets: self.selectedAssets.flatMap{ $0.phAsset })
             #endif
             self.delegate?.dismissPhotoPicker(withTLPHAssets: self.selectedAssets)
-            shouldDismiss = self.delegate?.shouldDismissPhotoPicker(withTLPHAssets: self.selectedAssets) ?? true
+            shouldDismiss = self.delegate?.shouldDismissPhotoPicker(self, withTLPHAssets: self.selectedAssets) ?? true
             self.completionWithTLPHAssets?(self.selectedAssets)
             #if swift(>=4.1)
             self.completionWithPHAssets?(self.selectedAssets.compactMap{ $0.phAsset })
